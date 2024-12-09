@@ -1,14 +1,15 @@
-import "./App.css";
-import AppLayout from "./layouts/AppLayout";
-import { ThemeProvider } from "./components/theme-provider";
-import Home from "./pages/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Onboarding from "./pages/Onboarding";
-import Joblisting from "./pages/Joblisting";
+import "./App.css";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { ThemeProvider } from "./components/theme-provider";
+import AppLayout from "./layouts/AppLayout";
+import Home from "./pages/Home";
 import Job from "./pages/Job";
+import Joblisting from "./pages/Joblisting";
+import MyJobs from "./pages/MyJobs";
+import Onboarding from "./pages/Onboarding";
 import PostJob from "./pages/PostJob";
 import SavedJobs from "./pages/SavedJobs";
-import MyJobs from "./pages/MyJobs";
 
 const router = createBrowserRouter([
   {
@@ -20,27 +21,51 @@ const router = createBrowserRouter([
       },
       {
         path: "/onboarding",
-        element: <Onboarding />,
+        element: (
+          <ProtectedRoute>
+            <Onboarding />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/jobs",
-        element: <Joblisting />,
+        element: (
+          <ProtectedRoute>
+            <Joblisting />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/job/:id",
-        element: <Job />,
+        element: (
+          <ProtectedRoute>
+            <Job />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/post-job",
-        element: <PostJob />,
+        element: (
+          <ProtectedRoute>
+            <PostJob />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/saved-jobs",
-        element: <SavedJobs />,
+        element: (
+          <ProtectedRoute>
+            <SavedJobs />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/my-jobs",
-        element: <MyJobs />,
+        element: (
+          <ProtectedRoute>
+            <MyJobs />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

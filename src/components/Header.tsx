@@ -1,14 +1,22 @@
 import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/clerk-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "./ui/button";
+import { BriefcaseBusiness, Heart } from "lucide-react";
 
 const Header = () => {
   const [showSignIn, setShowSignIn] = useState(false);
+  const [search, setSearch] = useSearchParams();
+  useEffect(() => {
+    if (search.get("sign-in")) {
+      setShowSignIn(true);
+    }
+  }, [search]);
 
   function handleOverlayClick(e: React.MouseEvent<HTMLDivElement>) {
     if (e.target === e.currentTarget) {
       setShowSignIn(false);
+      setSearch({});
     }
   }
   return (
@@ -22,7 +30,26 @@ const Header = () => {
           <Button onClick={() => setShowSignIn(true)}>Sign In</Button>
         </SignedOut>
         <SignedIn>
-          <UserButton />
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: "w-10 h-10",
+              },
+            }}
+          >
+            <UserButton.MenuItems>
+              <UserButton.Link
+                label="My Jobs"
+                labelIcon={<BriefcaseBusiness size={15} />}
+                href="/my-jobs"
+              />
+              <UserButton.Link
+                label="Saved Jobs"
+                labelIcon={<Heart size={15} />}
+                href="/saved-jobs"
+              />
+            </UserButton.MenuItems>
+          </UserButton>
         </SignedIn>
       </div>
       {showSignIn && (

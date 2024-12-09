@@ -11,10 +11,10 @@ svg {
   pointer-events: none;
 }
 /* this will increase the size of clerk user button  */
-.cl-avatarBox {
+/* .cl-avatarBox {
   width: 2.75rem;
   height: 2.75rem;
-}
+} */
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
