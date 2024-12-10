@@ -5,7 +5,7 @@ import { GridBackground } from "../components/ui/GridBackground";
 const AppLayout = () => {
   return (
     <GridBackground>
-      <main className="min-h-screen container ">
+      <main className="min-h-screen container flex flex-col  ">
         <Header />
         <Outlet />
       </main>

@@ -31,14 +31,10 @@ const Home = () => {
 
         <div className="flex flex-col sm:flex-row sm:justify-center gap-5 items-center">
           <Link to="/jobs">
-            <Button size={"lg"} className="btn ">
-              Find Jobs
-            </Button>
+            <Button size={"lg"}>Find Jobs</Button>
           </Link>
           <Link to="/post-job">
-            <Button size={"lg"} className="btn">
-              Post a Job
-            </Button>
+            <Button size={"lg"}>Post a Job</Button>
           </Link>
         </div>
 
