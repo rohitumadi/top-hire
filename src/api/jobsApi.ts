@@ -4,7 +4,9 @@ export async function getJobs(token: string, companyDetails: any) {
   const { location, company_id, searchQuery } = companyDetails;
   const supabase = createClerkSupabaseClient(token);
 
-  let query = supabase.from("jobs").select("*");
+  let query = supabase
+    .from("jobs")
+    .select("*, company:companies(company_name,company_logo_url)");
 
   if (location) {
     query = query.eq("location", location);
@@ -24,6 +26,5 @@ export async function getJobs(token: string, companyDetails: any) {
     console.log("error occurred while fetching jobs", error.message);
     return null;
   }
-
   return data;
 }

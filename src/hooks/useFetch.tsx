@@ -2,7 +2,7 @@ import { useSession } from "@clerk/clerk-react";
 import { useState } from "react";
 
 const useFetch = (cb: any, options = {}) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { session } = useSession();
