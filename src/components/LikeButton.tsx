@@ -1,5 +1,6 @@
-import { getSavedJobs } from "@/api/jobsApi";
+import { getSavedJobs, saveJob, unSaveJob } from "@/api/jobsApi";
 import useFetch from "@/hooks/useFetch";
+import useToggleSavedJobs from "@/hooks/useToggleSavedJobs";
 import { useUser } from "@clerk/clerk-react";
 import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -7,6 +8,10 @@ import { useNavigate } from "react-router-dom";
 
 const LikeButton = ({ jobId }: { jobId: string }) => {
   const [isLiked, setIsLiked] = useState(false);
+  const { fn: saveJobFn, loading: saveJobLoading } =
+    useToggleSavedJobs(saveJob);
+  const { fn: unSaveJobFn, loading: unSaveJobLoading } =
+    useToggleSavedJobs(unSaveJob);
 
   const navigate = useNavigate();
   const {
@@ -36,10 +41,18 @@ const LikeButton = ({ jobId }: { jobId: string }) => {
     }
   }, [data, jobId]);
 
-  function handleToggleLike(e: React.MouseEvent<SVGSVGElement>) {
+  async function handleToggleLike(e: React.MouseEvent<SVGSVGElement>) {
     e.stopPropagation();
     if (!user) {
       return navigate("?sign-in=true");
+    }
+
+    if (isLiked) {
+      await saveJobFn(user.id, jobId);
+      setIsLiked(false);
+    } else {
+      await unSaveJobFn(user.id, jobId);
+      setIsLiked(true);
     }
   }
   return (

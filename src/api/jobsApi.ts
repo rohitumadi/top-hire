@@ -42,15 +42,26 @@ export async function getSavedJobs(token: string) {
   return data;
 }
 
-export async function saveJob(token: string, jobId: string) {
+export async function saveJob(token: string, userId: string, jobId: string) {
   const supabase = createClerkSupabaseClient(token);
 
-  // const { data, error } = await supabase.from("saved_jobs").insert({
-  //   job_id: jobId,
-  //   user_id: supabase.auth.user()?.id,
-  // });
-  // if (error) {
-  //   console.log("error occurred while saving job", error.message);
-  // }
-  // return data;
+  const { data, error } = await supabase.from("saved_jobs").insert({
+    job_id: jobId,
+    user_id: userId,
+  });
+  if (error) {
+    console.log("error occurred while saving job", error.message);
+  }
+}
+export async function unSaveJob(token: string, userId: string, jobId: string) {
+  const supabase = createClerkSupabaseClient(token);
+
+  const { data, error } = await supabase
+    .from("saved_jobs")
+    .delete()
+    .eq("job_id", jobId)
+    .eq("user_id", userId);
+  if (error) {
+    console.log("error occurred while deleting job", error.message);
+  }
 }

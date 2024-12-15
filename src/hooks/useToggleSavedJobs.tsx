@@ -1,22 +1,19 @@
 import { useSession } from "@clerk/clerk-react";
 import { useState } from "react";
 
-const useFetch = (cb: Function, options = {}) => {
-  const [data, setData] = useState<any>(null);
+export default function useToggleSavedJobs(cb: Function) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { session } = useSession();
 
-  const fetchData = async (...args: any) => {
+  const fn = async (...args: any) => {
     setLoading(true);
 
     try {
       const supabaseAccessToken = await session?.getToken({
         template: "supabase",
       });
-      const res = await cb(supabaseAccessToken, options, ...args);
-
-      setData(res);
+      const res = await cb(supabaseAccessToken, ...args);
       setError(null);
     } catch (e: any) {
       console.log("error", e);
@@ -27,6 +24,5 @@ const useFetch = (cb: Function, options = {}) => {
     }
   };
 
-  return { data, loading, error, fetchData };
-};
-export default useFetch;
+  return { loading, error, fn };
+}
