@@ -14,8 +14,8 @@ import { Button } from "../components/ui/button";
 import { BackgroundLines } from "@/components/ui/background-lines";
 const Home = () => {
   return (
-    <BackgroundLines className="flex items-center   justify-center w-full flex-col px-4">
-      <main className="flex flex-col  gap-5 sm:gap-8 items-center">
+    <BackgroundLines className="flex items-center    justify-center w-full flex-col px-4">
+      <main className="flex flex-col   gap-5 sm:gap-8 items-center">
         <header className="text-center">
           <h1 className="sm:text-6xl  font-extrabold text-4xl">TOP HIRE</h1>
         </header>

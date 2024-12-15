@@ -6,10 +6,10 @@
   width: 0px;
   background: transparent;
 }
-/* this will make svg clickable */
-svg {
+/* this will make svg clickable on entire app */
+/* svg {
   pointer-events: none;
-}
+} */
 /* this will increase the size of clerk user button  */
 /* .cl-avatarBox {
   width: 2.75rem;

@@ -1,5 +1,5 @@
-import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import LikeButton from "./LikeButton";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 interface JobCardProps {
   title: string;
@@ -25,7 +25,7 @@ const JobCard = ({ jobDetails }: { jobDetails: JobCardProps }) => {
 
   return (
     <Card
-      className="cursor-pointer w-full bg-neutral-900 "
+      className="cursor-pointer  w-full bg-neutral-900 border-2 border-neutral-300"
       onClick={() => {
         console.log("clicked");
         navigate(`/jobs/${id}`);
@@ -36,13 +36,13 @@ const JobCard = ({ jobDetails }: { jobDetails: JobCardProps }) => {
           {title} at {company_name} | {location}
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex items-center gap-2  ">
+      <CardContent className="flex  items-center gap-2 gap-x-4  ">
         <img src={company_logo_url} className="w-32  p-2" alt="Company Image" />
 
         <p>
           Expected Salary: {expected_salary} | Experience: {experience}
         </p>
-        <Heart className="w-4 h-4 hover:bg-red-600" />
+        <LikeButton jobId={id} />
       </CardContent>
     </Card>
   );

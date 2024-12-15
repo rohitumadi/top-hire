@@ -15,7 +15,7 @@ export const BackgroundLines = ({
   };
 }) => {
   return (
-    <div className={cn("w-full  bg-transparent", className)}>
+    <div className={cn("w-full  bg-transparent ", className)}>
       <SVG svgOptions={svgOptions} />
       {children}
     </div>
@@ -92,6 +92,8 @@ const SVG = ({
       xmlns="http://www.w3.org/2000/svg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
+      // this will make svg clickable on child elements
+      style={{ pointerEvents: "none" }}
       transition={{ duration: 1 }}
       className="absolute inset-0 w-full h-full"
     >

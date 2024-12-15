@@ -1,12 +1,10 @@
 import { getJobs } from "@/api/jobsApi";
 import JobCard from "@/components/JobCard";
 import useFetch from "@/hooks/useFetch";
-import { useUser } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const Joblisting = () => {
-  const { isLoaded } = useUser();
   const [searchQuery, setSearchQuery] = useState();
   const [location, setLocation] = useState();
   const [company_id, setCompanyId] = useState();
@@ -24,17 +22,10 @@ const Joblisting = () => {
     async function getData() {
       await fetchJobs();
     }
-    if (isLoaded) {
-      getData();
-    }
-  }, [isLoaded]);
-  if (!isLoaded) {
-    return (
-      <div className="flex justify-center items-center flex-grow">
-        <ClipLoader className="" color="#fff" size={100} />
-      </div>
-    );
-  }
+
+    getData();
+  }, []);
+
   return (
     <div className="flex flex-col gap-5">
       <h1 className="text-center ">Latest Jobs</h1>

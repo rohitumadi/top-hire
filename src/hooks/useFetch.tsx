@@ -15,6 +15,8 @@ const useFetch = (cb: any, options = {}) => {
         template: "supabase",
       });
       const res = await cb(supabaseAccessToken, options, ...args);
+      console.log(res);
+
       setData(res);
       setError(null);
     } catch (e: any) {
