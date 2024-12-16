@@ -61,7 +61,7 @@ const LikeButton = ({ jobId }: { jobId: string }) => {
   return (
     <Heart
       onClick={(e) => handleToggleLike(e)}
-      className={`w-4 h-4 hover:fill-current  hover:text-red-600 ${
+      className={`self-center justify-self-center hover:fill-current  hover:text-red-600 ${
         isLiked ? "fill-current text-red-600" : ""
       }`}
     />

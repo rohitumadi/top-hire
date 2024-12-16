@@ -31,15 +31,19 @@ const JobCard = ({ jobDetails }: { jobDetails: JobCardProps }) => {
         navigate(`/jobs/${id}`);
       }}
     >
-      <CardHeader>
-        <CardTitle>
+      <CardHeader className="p-4">
+        <CardTitle className="">
           {title} at {company_name} | {location}
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex  items-center gap-2 gap-x-4  ">
-        <img src={company_logo_url} className="w-32  p-2" alt="Company Image" />
+      <CardContent className="grid grid-cols-5 p-4 gap-2 ">
+        <img
+          src={company_logo_url}
+          className="w-24 sm:w-24 self-center col-span-1"
+          alt="Company Image"
+        />
 
-        <p>
+        <p className="col-span-3 ">
           Expected Salary: {expected_salary} | Experience: {experience}
         </p>
         <LikeButton jobId={id} />
