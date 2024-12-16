@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "./ui/button";
 import { BriefcaseBusiness, Heart } from "lucide-react";
+import { ModeToggle } from "./mode-toggle";
 
 const Header = () => {
   const [showSignIn, setShowSignIn] = useState(false);
@@ -26,6 +27,7 @@ const Header = () => {
       </Link>
 
       <div className="flex items-center gap-2">
+        <ModeToggle />
         <SignedOut>
           <Button onClick={() => setShowSignIn(true)}>Sign In</Button>
         </SignedOut>

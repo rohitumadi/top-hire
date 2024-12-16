@@ -38,7 +38,11 @@ const Home = () => {
           </Link>
         </div>
 
-        <InfiniteMovingCards items={companies} speed="slow" />
+        <InfiniteMovingCards
+          className="bg-neutral-800"
+          items={companies}
+          speed="slow"
+        />
 
         <section className="flex gap-5 py-4">
           <MagicCard className="w-[350px] ">
@@ -58,14 +62,14 @@ const Home = () => {
             </CardHeader>
           </MagicCard>
         </section>
-        <Accordion type="single" collapsible className="w-full py-4">
+        {/* <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, idx) => (
             <AccordionItem key={idx} value={`item-${idx + 1}`}>
               <AccordionTrigger>{faq.question}</AccordionTrigger>
               <AccordionContent className="">{faq.answer}</AccordionContent>
             </AccordionItem>
           ))}
-        </Accordion>
+        </Accordion> */}
       </main>
     </BackgroundLines>
   );

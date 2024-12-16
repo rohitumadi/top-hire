@@ -25,9 +25,8 @@ const JobCard = ({ jobDetails }: { jobDetails: JobCardProps }) => {
 
   return (
     <Card
-      className="cursor-pointer  w-full bg-neutral-900 border-2 border-neutral-300"
+      className="cursor-pointer  w-full "
       onClick={() => {
-        console.log("clicked");
         navigate(`/jobs/${id}`);
       }}
     >
@@ -39,7 +38,7 @@ const JobCard = ({ jobDetails }: { jobDetails: JobCardProps }) => {
       <CardContent className="grid grid-cols-5 p-4 gap-2 ">
         <img
           src={company_logo_url}
-          className="w-24 sm:w-24 self-center col-span-1"
+          className="w-24 sm:w-24 self-center col-span-1 bg-neutral-700 rounded-md p-2"
           alt="Company Image"
         />
 
