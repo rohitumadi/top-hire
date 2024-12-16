@@ -4,6 +4,7 @@ import useToggleSavedJobs from "@/hooks/useToggleSavedJobs";
 import { useUser } from "@clerk/clerk-react";
 import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const LikeButton = ({ jobId }: { jobId: string }) => {
@@ -48,10 +49,12 @@ const LikeButton = ({ jobId }: { jobId: string }) => {
     }
 
     if (isLiked) {
-      await saveJobFn(user.id, jobId);
+      await unSaveJobFn(user.id, jobId);
+      toast.success("Job removed from saved jobs");
       setIsLiked(false);
     } else {
-      await unSaveJobFn(user.id, jobId);
+      await saveJobFn(user.id, jobId);
+      toast.success("Job saved successfully");
       setIsLiked(true);
     }
   }
