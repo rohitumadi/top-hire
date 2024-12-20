@@ -1,5 +1,8 @@
-type Props = {};
-const Job = (props: Props) => {
-  return <div>Job</div>;
+const Job = () => {
+  return (
+    <div>
+      <h1>{}</h1>
+    </div>
+  );
 };
 export default Job;

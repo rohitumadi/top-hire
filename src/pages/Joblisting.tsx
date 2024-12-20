@@ -3,6 +3,7 @@ import { getJobs } from "@/api/jobsApi";
 import CompanyFilter from "@/components/CompanyFilter";
 import JobCard from "@/components/JobCard";
 import LocationFilter from "@/components/LocationFilter";
+import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useFetch from "@/hooks/useFetch";
@@ -12,8 +13,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 
 const Joblisting = () => {
   const [searchQuery, setSearchQuery] = useState<FormDataEntryValue>();
-  const [location, setLocation] = useState();
-  const [company_id, setCompanyId] = useState();
+  const [location, setLocation] = useState<string>();
+  const { theme } = useTheme();
+  const [company_id, setCompanyId] = useState<string>();
   const {
     data: jobs,
     loading: loadingJobs,
@@ -33,15 +35,14 @@ const Joblisting = () => {
   useEffect(() => {
     async function getData() {
       await fetchJobs();
+      await fetchCompanies();
     }
 
     getData();
   }, [searchQuery, location, company_id]);
 
   useEffect(() => {
-    async function getData() {
-      await fetchCompanies();
-    }
+    async function getData() {}
 
     getData();
   }, []);
@@ -53,6 +54,12 @@ const Joblisting = () => {
     if (query) {
       setSearchQuery(query);
     }
+  }
+
+  async function clearFilters() {
+    setLocation("");
+    setCompanyId("");
+    setSearchQuery("");
   }
 
   return (
@@ -75,7 +82,9 @@ const Joblisting = () => {
                 <Filter />
                 Filters
               </div>
-              <Button onClick={() => {}}>Clear All</Button>
+              <Button variant={"destructive"} onClick={clearFilters}>
+                Clear All
+              </Button>
             </div>
 
             <LocationFilter location={location} setLocation={setLocation} />
@@ -87,8 +96,11 @@ const Joblisting = () => {
           </div>
         </div>
         {loadingJobs && (
-          <div className="col-span-4 self-center justify-self-center">
-            <ClipLoader className="" color="#fff" size={100} />
+          <div className="col-span-5 self-center justify-self-center">
+            <ClipLoader
+              color={theme === "dark" ? "white" : "black"}
+              size={100}
+            />
           </div>
         )}
 

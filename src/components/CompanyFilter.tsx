@@ -12,8 +12,8 @@ import { Dispatch, SetStateAction } from "react";
 
 interface CompanyFilterProps {
   companies: Database["public"]["Tables"]["companies"]["Row"][];
-  company_id: string | undefined;
-  setCompanyId: Dispatch<SetStateAction<string>>;
+  company_id?: string | undefined;
+  setCompanyId: Dispatch<SetStateAction<string|undefined>>;
 }
 
 function CompanyFilter({

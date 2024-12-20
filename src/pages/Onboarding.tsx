@@ -1,3 +1,4 @@
+import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/clerk-react";
 import { useEffect } from "react";
@@ -7,6 +8,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 const Onboarding = () => {
   const { user, isLoaded } = useUser();
   const navigate = useNavigate();
+  const { theme } = useTheme();
   useEffect(() => {
     if (user?.unsafeMetadata?.role) {
       navigate(
@@ -17,7 +19,7 @@ const Onboarding = () => {
   if (!isLoaded) {
     return (
       <div className="flex justify-center items-center flex-grow">
-        <ClipLoader className="" color="#fff" size={100} />
+        <ClipLoader color={theme === "dark" ? "white" : "black"} size={100} />
       </div>
     );
   }
