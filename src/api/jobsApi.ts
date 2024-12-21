@@ -1,7 +1,7 @@
 import { supabase } from "@/utils/supabase";
 import createClerkSupabaseClient from "@/utils/supabaseClerkClient";
 
-export async function getJobs(token: string, companyDetails: any) {
+export async function getJobs(companyDetails: any) {
   const { location, company_id, searchQuery } = companyDetails;
 
   let query = supabase
@@ -64,4 +64,18 @@ export async function unSaveJob(token: string, userId: string, jobId: string) {
   if (error) {
     console.log("error occurred while deleting job", error.message);
   }
+}
+
+export async function getApplicationCountForJob(jobId: string) {
+  const { data, error } = await supabase
+    .from("applications")
+    .select("*")
+    .eq("id", jobId);
+  if (error) {
+    console.log(
+      "error occurred while fetching application count",
+      error.message
+    );
+  }
+  return data?.length;
 }

@@ -1,5 +1,5 @@
 import { getSavedJobs, saveJob, unSaveJob } from "@/api/jobsApi";
-import useFetch from "@/hooks/useFetch";
+import useFetchAuth from "@/hooks/useFetchAuth";
 import useToggleSavedJobs from "@/hooks/useToggleSavedJobs";
 import { useUser } from "@clerk/clerk-react";
 import { Heart } from "lucide-react";
@@ -20,7 +20,7 @@ const LikeButton = ({ jobId }: { jobId: string }) => {
     loading: loadingSavedJobs,
     error,
     fetchData: fetchSavedJobs,
-  } = useFetch(getSavedJobs, {});
+  } = useFetchAuth(getSavedJobs, {});
   const { user, isLoaded } = useUser();
   useEffect(() => {
     if (!isLoaded || !user) {

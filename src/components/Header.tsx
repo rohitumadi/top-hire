@@ -27,6 +27,9 @@ const Header = () => {
       </Link>
 
       <div className="flex items-center gap-2">
+        <Link to="/jobs">
+          <Button>Jobs</Button>
+        </Link>
         <ModeToggle />
         <SignedOut>
           <Button onClick={() => setShowSignIn(true)}>Sign In</Button>

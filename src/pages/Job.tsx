@@ -1,11 +1,39 @@
+import { getApplicationCountForJob } from "@/api/jobsApi";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import ShineBorder from "@/components/ui/shine-border";
+import useFetch from "@/hooks/useFetch";
+import { useUser } from "@clerk/clerk-react";
 import { Briefcase, DoorClosed, DoorOpen } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
 
 const Job = () => {
+  const { id } = useParams<{ id: string }>();
+  const { user } = useUser();
+  const role = user?.unsafeMetadata.role;
+
   const location = useLocation();
+  const {
+    data: applicationCount,
+    loading: loadingApplicationCount,
+    fetchData: fetchApplicationCount,
+    error,
+  } = useFetch(getApplicationCountForJob);
+  useEffect(() => {
+    async function fetchApplicationCountForJob(jobId: string) {
+      await fetchApplicationCount(jobId);
+    }
+    if (id) fetchApplicationCountForJob(id);
+  }, [id]);
   const jobDetails = location.state?.jobDetails;
   const {
     title,
@@ -25,20 +53,46 @@ const Job = () => {
       borderWidth={3}
     >
       <Card className="">
-        <div className="flex flex-col gap-y-4 s p-2">
+        <div className="flex flex-col gap-y-4  p-2">
           <h1 className="font-semibold">
             {company_name} is hiring for {title} | {experience}
           </h1>
-          <div className="flex justify-between ">
-            <p className="flex gap-2">
+          <div className="flex justify-between items-center">
+            <div className="flex gap-2  ">
               <Badge>{jobLocation}</Badge>
               <Badge>{expected_salary}</Badge>
-            </p>
+            </div>
             <p className="flex gap-2 items-center">
-              <Briefcase /> 0 applications
+              <Briefcase /> {applicationCount} applicants
             </p>
-            <p>
-              {isOpen ? (
+            <div className="flex gap-2 items-center">
+              {/* <span>Job Status </span> */}
+              {user && role === "recruiter" ? (
+                <Select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue
+                      placeholder={
+                        isOpen ? (
+                          <div className="flex gap-2 items-center">
+                            <DoorOpen /> Open
+                          </div>
+                        ) : (
+                          <div className="flex gap-2 items-center">
+                            <DoorClosed /> Closed
+                          </div>
+                        )
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectItem value={`${isOpen ? "open" : "close"}`}>
+                        {`${isOpen ? "Close" : "Open"}`}
+                      </SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              ) : isOpen ? (
                 <div className="flex gap-2 items-center">
                   <DoorOpen /> Open
                 </div>
@@ -47,11 +101,11 @@ const Job = () => {
                   <DoorClosed /> Closed
                 </div>
               )}
-            </p>
+            </div>
           </div>
 
           <img
-            className="self-center bg-neutral-800 rounded-md p-2 dark:bg-transparent"
+            className="self-center bg-neutral-800 rounded-md p-4 dark:bg-transparent"
             src={company_logo_url}
             width={400}
             alt="Company Logo"
@@ -62,7 +116,7 @@ const Job = () => {
           </div>
           <div>
             <h2 className="font-extrabold text-2xl">Requirements</h2>
-            <p>
+            <div>
               {requirementsObj.map(
                 (
                   section: { title: string; items: string[] },
@@ -82,7 +136,7 @@ const Job = () => {
                   </div>
                 )
               )}
-            </p>
+            </div>
           </div>
         </div>
       </Card>
