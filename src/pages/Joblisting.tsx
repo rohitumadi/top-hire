@@ -6,6 +6,7 @@ import LocationFilter from "@/components/LocationFilter";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import ShineBorder from "@/components/ui/shine-border";
 import useFetch from "@/hooks/useFetch";
 import { Filter } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -64,7 +65,7 @@ const Joblisting = () => {
 
   return (
     <div className=" flex flex-col gap-5">
-      <h1 className="text-center ">Latest Jobs</h1>
+      <h1 className="text-center font-semibold ">Latest Jobs</h1>
       <form
         className="w-full flex  gap-2 mt-2 "
         onSubmit={(e) => handleSearch(e)}
@@ -76,24 +77,30 @@ const Joblisting = () => {
 
       <div className="grid sm:grid-cols-7 grid-cols-1 ">
         <div className="p-2 sm:col-span-2">
-          <div className="font-bold gap-2 flex flex-col  items-center  border-2 border-neutral-500 rounded-sm p-2">
-            <div className="flex  justify-between w-full items-center ">
-              <div className="flex items-center gap-2">
-                <Filter />
-                Filters
+          <ShineBorder
+            className="relative flex h-fit w-full flex-col overflow-hidden rounded-lg border bg-background md:shadow-xl"
+            color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+            borderWidth={3}
+          >
+            <div className="font-bold gap-2 flex flex-col w-full items-center  p-2">
+              <div className="flex  justify-between w-full items-center ">
+                <div className="flex items-center gap-2">
+                  <Filter />
+                  Filters
+                </div>
+                <Button variant={"destructive"} onClick={clearFilters}>
+                  Clear All
+                </Button>
               </div>
-              <Button variant={"destructive"} onClick={clearFilters}>
-                Clear All
-              </Button>
-            </div>
 
-            <LocationFilter location={location} setLocation={setLocation} />
-            <CompanyFilter
-              companies={companies}
-              company_id={company_id}
-              setCompanyId={setCompanyId}
-            />
-          </div>
+              <LocationFilter location={location} setLocation={setLocation} />
+              <CompanyFilter
+                companies={companies}
+                company_id={company_id}
+                setCompanyId={setCompanyId}
+              />
+            </div>
+          </ShineBorder>
         </div>
         {loadingJobs && (
           <div className="col-span-5 self-center justify-self-center">

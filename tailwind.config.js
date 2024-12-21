@@ -87,20 +87,20 @@ export default {
   					height: '0'
   				}
   			},
-  			'accordion-down': {
-  				from: {
-  					height: '0'
-  				},
-  				to: {
-  					height: 'var(--radix-accordion-content-height)'
+  			'border-beam': {
+  				'100%': {
+  					'offset-distance': '100%'
   				}
   			},
-  			'accordion-up': {
-  				from: {
-  					height: 'var(--radix-accordion-content-height)'
+  			shine: {
+  				'0%': {
+  					'background-position': '0% 0%'
+  				},
+  				'50%': {
+  					'background-position': '100% 100%'
   				},
   				to: {
-  					height: '0'
+  					'background-position': '0% 0%'
   				}
   			}
   		},
@@ -108,8 +108,8 @@ export default {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			scroll: 'scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite',
-  			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
+  			shine: 'shine var(--duration) infinite linear'
   		},
   		fontFamily: {
   			roboto: [

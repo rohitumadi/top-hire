@@ -1,17 +1,11 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { BackgroundLines } from "@/components/ui/background-lines";
+import { BorderBeam } from "@/components/ui/border-beam";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
 import { MagicCard } from "@/components/ui/magic-card";
 import { companies } from "@/data/comapnies";
-import { faqs } from "@/data/faq";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/button";
-import { BackgroundLines } from "@/components/ui/background-lines";
 const Home = () => {
   return (
     <BackgroundLines className="flex items-center    justify-center w-full flex-col px-4">
@@ -52,6 +46,7 @@ const Home = () => {
                 Search and apply for jobs,track applications,and more
               </CardDescription>
             </CardHeader>
+            <BorderBeam size={250} duration={12} delay={9} />
           </MagicCard>
           <MagicCard className="w-[350px] ">
             <CardHeader>
@@ -60,6 +55,7 @@ const Home = () => {
                 Post Jobs, manage applications and find the best talents
               </CardDescription>
             </CardHeader>
+            <BorderBeam size={250} duration={12} delay={9} />
           </MagicCard>
         </section>
         {/* <Accordion type="single" collapsible className="w-full">

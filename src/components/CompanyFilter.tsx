@@ -13,7 +13,7 @@ import { Dispatch, SetStateAction } from "react";
 interface CompanyFilterProps {
   companies: Database["public"]["Tables"]["companies"]["Row"][];
   company_id?: string | undefined;
-  setCompanyId: Dispatch<SetStateAction<string|undefined>>;
+  setCompanyId: Dispatch<SetStateAction<string | undefined>>;
 }
 
 function CompanyFilter({
@@ -29,7 +29,7 @@ function CompanyFilter({
       <SelectContent>
         <SelectGroup>
           {companies?.map(({ company_name, id }) => (
-            <SelectItem value={id} key={company_name}>
+            <SelectItem value={`${id}`} key={company_name}>
               {company_name}
             </SelectItem>
           ))}
