@@ -1,6 +1,6 @@
 import { getSavedJobs, saveJob, unSaveJob } from "@/api/jobsApi";
 import useFetchAuth from "@/hooks/useFetchAuth";
-import useToggleSavedJobs from "@/hooks/useToggleSavedJobs";
+import useUpdate from "@/hooks/useUpdate";
 import { useUser } from "@clerk/clerk-react";
 import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -9,10 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 const LikeButton = ({ jobId }: { jobId: string }) => {
   const [isLiked, setIsLiked] = useState(false);
-  const { fn: saveJobFn, loading: saveJobLoading } =
-    useToggleSavedJobs(saveJob);
-  const { fn: unSaveJobFn, loading: unSaveJobLoading } =
-    useToggleSavedJobs(unSaveJob);
+  const { fn: saveJobFn, loading: saveJobLoading } = useUpdate(saveJob);
+  const { fn: unSaveJobFn, loading: unSaveJobLoading } = useUpdate(unSaveJob);
 
   const navigate = useNavigate();
   const {

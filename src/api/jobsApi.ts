@@ -29,6 +29,21 @@ export async function getJobs(companyDetails: any) {
   return data;
 }
 
+export async function getJobDetails(jobId: string) {
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
+  const { data, error } = await supabase
+    .from("jobs")
+    .select("*, company:companies(company_name,company_logo_url)")
+    .eq("id", jobId)
+    .single();
+
+  if (error) {
+    console.log("error occurred while fetching job details", error.message);
+    return null;
+  }
+  return data;
+}
+
 export async function getSavedJobs(token: string) {
   const supabase = createClerkSupabaseClient(token);
   const { data, error } = await supabase
@@ -78,4 +93,19 @@ export async function getApplicationCountForJob(jobId: string) {
     );
   }
   return data?.length;
+}
+
+export async function updateJobStatus(
+  token: string,
+  jobId: string,
+  status: string
+) {
+  const supabase = createClerkSupabaseClient(token);
+  const { data, error } = await supabase
+    .from("jobs")
+    .update({ isOpen: status })
+    .eq("id", jobId);
+  if (error) {
+    console.log("error occurred while updating job status", error.message);
+  }
 }

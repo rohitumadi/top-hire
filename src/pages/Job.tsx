@@ -1,4 +1,9 @@
-import { getApplicationCountForJob } from "@/api/jobsApi";
+import {
+  getApplicationCountForJob,
+  getJobDetails,
+  updateJobStatus,
+} from "@/api/jobsApi";
+import { useTheme } from "@/components/theme-provider";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import {
@@ -11,30 +16,35 @@ import {
 } from "@/components/ui/select";
 import ShineBorder from "@/components/ui/shine-border";
 import useFetch from "@/hooks/useFetch";
+import useUpdate from "@/hooks/useUpdate";
 import { useUser } from "@clerk/clerk-react";
 import { Briefcase, DoorClosed, DoorOpen } from "lucide-react";
 import { useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Job = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useUser();
+  const { theme } = useTheme();
   const role = user?.unsafeMetadata.role;
-
-  const location = useLocation();
   const {
     data: applicationCount,
     loading: loadingApplicationCount,
     fetchData: fetchApplicationCount,
     error,
   } = useFetch(getApplicationCountForJob);
-  useEffect(() => {
-    async function fetchApplicationCountForJob(jobId: string) {
-      await fetchApplicationCount(jobId);
-    }
-    if (id) fetchApplicationCountForJob(id);
-  }, [id]);
-  const jobDetails = location.state?.jobDetails;
+  const {
+    data: jobDetails,
+    fetchData: fetchJob,
+    loading: loadingJob,
+  } = useFetch(getJobDetails);
+  const {
+    fn: updateJobStatusFn,
+    loading: updateJobStatusLoading,
+    error: updateJobStatusError,
+  } = useUpdate(updateJobStatus);
   const {
     title,
     location: jobLocation,
@@ -43,9 +53,35 @@ const Job = () => {
     expected_salary,
     description,
     requirements,
-    company: { company_name, company_logo_url },
-  } = jobDetails;
-  const requirementsObj = JSON.parse(requirements);
+    company: { company_name, company_logo_url } = {},
+  } = jobDetails || {};
+  useEffect(() => {
+    async function getJob(jobId: string) {
+      console.log("fetching job details");
+      await fetchApplicationCount(jobId);
+      await fetchJob(jobId);
+    }
+    if (id) getJob(id);
+  }, [id]);
+
+  async function handleStatusChange() {
+    if (isOpen) {
+      await updateJobStatusFn(id, "false");
+      await fetchJob(id);
+      toast.success("Job closed successfully");
+    } else {
+      await updateJobStatusFn(id, "true");
+      await fetchJob(id);
+      toast.success("Job opened successfully");
+    }
+  }
+  if (loadingJob || loadingApplicationCount) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader color={theme === "dark" ? "white" : "black"} size={100} />
+      </div>
+    );
+  }
   return (
     <ShineBorder
       className="relative flex mb-4 h-fit w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl"
@@ -68,7 +104,7 @@ const Job = () => {
             <div className="flex gap-2 items-center">
               {/* <span>Job Status </span> */}
               {user && role === "recruiter" ? (
-                <Select>
+                <Select onValueChange={handleStatusChange}>
                   <SelectTrigger className="w-[180px]">
                     <SelectValue
                       placeholder={
@@ -86,8 +122,11 @@ const Job = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value={`${isOpen ? "open" : "close"}`}>
-                        {`${isOpen ? "Close" : "Open"}`}
+                      <SelectItem value={isOpen ? "closed" : "open"}>
+                        <div className="flex cursor-pointer gap-2 items-center">
+                          {isOpen ? <DoorClosed /> : <DoorOpen />}
+                          {isOpen ? "Close" : "Open"}
+                        </div>
                       </SelectItem>
                     </SelectGroup>
                   </SelectContent>
@@ -116,27 +155,7 @@ const Job = () => {
           </div>
           <div>
             <h2 className="font-extrabold text-2xl">Requirements</h2>
-            <div>
-              {requirementsObj.map(
-                (
-                  section: { title: string; items: string[] },
-                  index: number
-                ) => (
-                  <div key={index} className="mb-6 ml-4">
-                    <h2 className="text-xl font-semibold mb-3">
-                      {section.title}
-                    </h2>
-                    <ul className="list-disc list-inside space-y-2">
-                      {section.items.map((item: string, idx: number) => (
-                        <li key={idx} className="ml-4">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )
-              )}
-            </div>
+            <p>{requirements}</p>
           </div>
         </div>
       </Card>

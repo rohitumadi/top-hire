@@ -1,7 +1,7 @@
 import { useSession } from "@clerk/clerk-react";
 import { useState } from "react";
 
-export default function useToggleSavedJobs(cb: Function) {
+export default function useUpdate(cb: Function) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { session } = useSession();
