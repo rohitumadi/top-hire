@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-const useFetch = (cb: Function, options = {}) => {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const useFetch = <T,>(cb: Function, options = {}) => {
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
 
   const fetchData = async (...args: any) => {
     setLoading(true);

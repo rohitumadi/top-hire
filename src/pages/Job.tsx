@@ -3,6 +3,7 @@ import {
   getJobDetails,
   updateJobStatus,
 } from "@/api/jobsApi";
+import ApplyModal from "@/components/ApplyModal";
 import { useTheme } from "@/components/theme-provider";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -17,7 +18,9 @@ import {
 import ShineBorder from "@/components/ui/shine-border";
 import useFetch from "@/hooks/useFetch";
 import useUpdate from "@/hooks/useUpdate";
+import { JobWithCompany } from "@/utils/database.types";
 import { useUser } from "@clerk/clerk-react";
+import MDEditor from "@uiw/react-md-editor";
 import { Briefcase, DoorClosed, DoorOpen } from "lucide-react";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
@@ -34,12 +37,12 @@ const Job = () => {
     loading: loadingApplicationCount,
     fetchData: fetchApplicationCount,
     error,
-  } = useFetch(getApplicationCountForJob);
+  } = useFetch<number>(getApplicationCountForJob);
   const {
     data: jobDetails,
-    fetchData: fetchJob,
     loading: loadingJob,
-  } = useFetch(getJobDetails);
+    fetchData: fetchJob,
+  } = useFetch<JobWithCompany>(getJobDetails);
   const {
     fn: updateJobStatusFn,
     loading: updateJobStatusLoading,
@@ -155,8 +158,14 @@ const Job = () => {
           </div>
           <div>
             <h2 className="font-extrabold text-2xl">Requirements</h2>
-            <p>{requirements}</p>
+            <MDEditor.Markdown
+              className="bg-transparent font-semibold  text-black dark:text-white"
+              source={requirements}
+            />
           </div>
+          {role !== "recruiter" && jobDetails && (
+            <ApplyModal job={jobDetails} />
+          )}
         </div>
       </Card>
     </ShineBorder>
