@@ -1,10 +1,17 @@
-import { Database } from "@/utils/database.types";
 import createClerkSupabaseClient from "@/utils/supabaseClerkClient";
 
-export async function saveJob(
-  token: string,
-  data: Database["public"]["Tables"]["applications"]["Row"]
-) {
+interface ApplicationData {
+  candidate_id: string;
+  job_id: string;
+  name: string;
+  status: string;
+  experience: number;
+  skills: string;
+  education: ["Intermediate", "Graduate", "Post Graduate"];
+  resume: File;
+}
+
+export async function applyJob(token: string, data: ApplicationData) {
   const supabase = createClerkSupabaseClient(token);
 
   const randomId = Math.floor(Math.random() * 1000000);
@@ -12,11 +19,12 @@ export async function saveJob(
 
   const { data: resumeUpload, error: resumeUploadError } =
     await supabase.storage.from("resumes").upload(filename, data.resume);
-  console.log(resumeUpload);
   if (resumeUploadError) {
     console.log("error occurred while uploading resume", resumeUploadError);
   }
-  const resumeUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/resumes/${filename}`;
+  const resumeUrl = `${
+    import.meta.env.VITE_SUPABASE_URL
+  }/storage/v1/object/public/resumes/${filename}`;
 
   const { error } = await supabase.from("applications").insert([
     {

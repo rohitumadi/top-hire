@@ -18,7 +18,7 @@ const LikeButton = ({ jobId }: { jobId: string }) => {
     loading: loadingSavedJobs,
     error,
     fetchData: fetchSavedJobs,
-  } = useFetchAuth(getSavedJobs, {});
+  } = useFetchAuth(getSavedJobs);
   const { user, isLoaded } = useUser();
   useEffect(() => {
     if (!isLoaded || !user) {
@@ -47,12 +47,21 @@ const LikeButton = ({ jobId }: { jobId: string }) => {
     }
 
     if (isLiked) {
-      await unSaveJobFn(user.id, jobId);
-      toast.success("Job removed from saved jobs");
+      await unSaveJobFn(
+        "Job removed from saved jobs",
+        "Error removing job ",
+        user.id,
+        jobId
+      );
+      toast.success("");
       setIsLiked(false);
     } else {
-      await saveJobFn(user.id, jobId);
-      toast.success("Job saved successfully");
+      await saveJobFn(
+        "Job saved successfully",
+        "Error saving job",
+        user.id,
+        jobId
+      );
       setIsLiked(true);
     }
   }

@@ -1,5 +1,5 @@
 import {
-  getApplicationCountForJob,
+  getApplicationsForJob,
   getJobDetails,
   updateJobStatus,
 } from "@/api/jobsApi";
@@ -18,26 +18,27 @@ import {
 import ShineBorder from "@/components/ui/shine-border";
 import useFetch from "@/hooks/useFetch";
 import useUpdate from "@/hooks/useUpdate";
-import { JobWithCompany } from "@/utils/database.types";
+import { Database, JobWithCompany } from "@/utils/database.types";
 import { useUser } from "@clerk/clerk-react";
 import MDEditor from "@uiw/react-md-editor";
 import { Briefcase, DoorClosed, DoorOpen } from "lucide-react";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
+type applicationsType = Database["public"]["Tables"]["applications"]["Row"][];
 
 const Job = () => {
   const { id } = useParams<{ id: string }>();
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
+  const [isApplied, setisApplied] = useState<boolean>(false);
   const { theme } = useTheme();
   const role = user?.unsafeMetadata.role;
   const {
-    data: applicationCount,
-    loading: loadingApplicationCount,
-    fetchData: fetchApplicationCount,
+    data: applications,
+    loading: loadingApplications,
+    fetchData: fetchApplications,
     error,
-  } = useFetch<number>(getApplicationCountForJob);
+  } = useFetch<applicationsType>(getApplicationsForJob);
   const {
     data: jobDetails,
     loading: loadingJob,
@@ -60,31 +61,50 @@ const Job = () => {
   } = jobDetails || {};
   useEffect(() => {
     async function getJob(jobId: string) {
-      console.log("fetching job details");
-      await fetchApplicationCount(jobId);
+      await fetchApplications(jobId);
       await fetchJob(jobId);
     }
     if (id) getJob(id);
   }, [id]);
+  useEffect(() => {
+    if (isLoaded) {
+      setisApplied(
+        applications?.some(
+          (application: Database["public"]["Tables"]["applications"]["Row"]) =>
+            application.candidate_id === user?.id
+        ) || false
+      );
+    }
+  }, [applications, isLoaded, user?.id]);
 
   async function handleStatusChange() {
     if (isOpen) {
-      await updateJobStatusFn(id, "false");
+      await updateJobStatusFn(
+        "Job closed successfully",
+        "Error closing Job",
+        id,
+        "false"
+      );
       await fetchJob(id);
-      toast.success("Job closed successfully");
     } else {
-      await updateJobStatusFn(id, "true");
+      await updateJobStatusFn(
+        "Job opened successfully",
+        "Error opening job",
+        id,
+        "true"
+      );
       await fetchJob(id);
-      toast.success("Job opened successfully");
     }
   }
-  if (loadingJob || loadingApplicationCount) {
+  if (loadingJob || loadingApplications) {
     return (
       <div className="flex justify-center items-center h-screen">
         <ClipLoader color={theme === "dark" ? "white" : "black"} size={100} />
       </div>
     );
   }
+  const applicationsCount = applications?.length || 0;
+
   return (
     <ShineBorder
       className="relative flex mb-4 h-fit w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl"
@@ -93,7 +113,7 @@ const Job = () => {
     >
       <Card className="">
         <div className="flex flex-col gap-y-4  p-2">
-          <h1 className="font-semibold">
+          <h1 className="font-semibold text-5xl">
             {company_name} is hiring for {title} | {experience}
           </h1>
           <div className="flex justify-between items-center">
@@ -102,7 +122,7 @@ const Job = () => {
               <Badge>{expected_salary}</Badge>
             </div>
             <p className="flex gap-2 items-center">
-              <Briefcase /> {applicationCount} applicants
+              <Briefcase /> {applicationsCount} applicants
             </p>
             <div className="flex gap-2 items-center">
               {/* <span>Job Status </span> */}
@@ -164,7 +184,11 @@ const Job = () => {
             />
           </div>
           {role !== "recruiter" && jobDetails && (
-            <ApplyModal job={jobDetails} />
+            <ApplyModal
+              job={jobDetails}
+              applied={isApplied || false}
+              fetchJob={fetchJob}
+            />
           )}
         </div>
       </Card>

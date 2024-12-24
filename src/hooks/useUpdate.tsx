@@ -1,12 +1,17 @@
 import { useSession } from "@clerk/clerk-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function useUpdate(cb: Function) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error>();
   const { session } = useSession();
 
-  const fn = async (...args: any) => {
+  const fn = async (
+    toastSuccessMsg: string,
+    toastErrorMessage: string,
+    ...args: any
+  ) => {
     setLoading(true);
 
     try {
@@ -14,13 +19,15 @@ export default function useUpdate(cb: Function) {
         template: "supabase",
       });
       const res = await cb(supabaseAccessToken, ...args);
-      setError(null);
+      toast.success(toastSuccessMsg);
+      setError(undefined);
     } catch (e: any) {
       console.log("error", e);
+      toast.error(toastErrorMessage + e.message);
       setError(e);
     } finally {
       setLoading(false);
-      setError(null);
+      setError(undefined);
     }
   };
 

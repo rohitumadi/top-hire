@@ -81,18 +81,18 @@ export async function unSaveJob(token: string, userId: string, jobId: string) {
   }
 }
 
-export async function getApplicationCountForJob(jobId: string) {
+export async function getApplicationsForJob(jobId: string) {
   const { data, error } = await supabase
     .from("applications")
     .select("*")
-    .eq("id", jobId);
+    .eq("job_id", jobId);
   if (error) {
     console.log(
       "error occurred while fetching application count",
       error.message
     );
   }
-  return data?.length;
+  return data;
 }
 
 export async function updateJobStatus(

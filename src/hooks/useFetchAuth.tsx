@@ -1,10 +1,10 @@
 import { useSession } from "@clerk/clerk-react";
 import { useState } from "react";
 
-const useFetchAuth = (cb: Function, options = {}) => {
+const useFetchAuth = (cb: Function) => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error>();
   const { session } = useSession();
 
   const fetchData = async (...args: any) => {
@@ -15,16 +15,16 @@ const useFetchAuth = (cb: Function, options = {}) => {
         template: "supabase",
       });
 
-      const res = await cb(supabaseAccessToken, options, ...args);
+      const res = await cb(supabaseAccessToken, ...args);
 
       setData(res);
-      setError(null);
+      setError(undefined);
     } catch (e: any) {
       console.log("error", e);
       setError(e);
     } finally {
       setLoading(false);
-      setError(null);
+      setError(undefined);
     }
   };
 
