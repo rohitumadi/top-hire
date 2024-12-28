@@ -10,6 +10,7 @@ import MyJobs from "./pages/MyJobs";
 import Onboarding from "./pages/Onboarding";
 import PostJob from "./pages/PostJob";
 import SavedJobs from "./pages/SavedJobs";
+import Applications from "./pages/Applications.tsx";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/job/:id",
         element: <Job />,
+      },
+      {
+        path: "/applications/:jobId",
+        element: <Applications />,
       },
       {
         path: "/post-job",

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ShineBorder from "@/components/ui/shine-border";
 import useFetch from "@/hooks/useFetch";
+import { Company, JobWithCompany } from "@/utils/database.types";
 import { Filter } from "lucide-react";
 import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -22,7 +23,7 @@ const Joblisting = () => {
     loading: loadingJobs,
     error,
     fetchData: fetchJobs,
-  } = useFetch(getJobs, {
+  } = useFetch<JobWithCompany[]>(getJobs, {
     searchQuery,
     location,
     company_id,
@@ -31,7 +32,7 @@ const Joblisting = () => {
     data: companies,
     loading: loadingCompanies,
     fetchData: fetchCompanies,
-  } = useFetch(getCompanies);
+  } = useFetch<Company[]>(getCompanies);
 
   useEffect(() => {
     async function getData() {
@@ -41,12 +42,6 @@ const Joblisting = () => {
 
     getData();
   }, [searchQuery, location, company_id]);
-
-  useEffect(() => {
-    async function getData() {}
-
-    getData();
-  }, []);
 
   function handleSearch(e: any) {
     e.preventDefault();
@@ -65,7 +60,7 @@ const Joblisting = () => {
 
   return (
     <div className=" flex flex-col gap-5">
-      <h1 className="text-center font-semibold ">Latest Jobs</h1>
+      <h1 className="text-center text-5xl font-semibold ">Latest Jobs</h1>
       <form
         className="w-full flex  gap-2 mt-2 "
         onSubmit={(e) => handleSearch(e)}
@@ -95,7 +90,7 @@ const Joblisting = () => {
 
               <LocationFilter location={location} setLocation={setLocation} />
               <CompanyFilter
-                companies={companies}
+                companies={companies || []}
                 company_id={company_id}
                 setCompanyId={setCompanyId}
               />

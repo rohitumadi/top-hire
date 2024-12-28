@@ -6,6 +6,7 @@ import {
 import ApplyModal from "@/components/ApplyModal";
 import { useTheme } from "@/components/theme-provider";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
   Select,
@@ -23,7 +24,7 @@ import { useUser } from "@clerk/clerk-react";
 import MDEditor from "@uiw/react-md-editor";
 import { Briefcase, DoorClosed, DoorOpen } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 type applicationsType = Database["public"]["Tables"]["applications"]["Row"][];
 
@@ -32,6 +33,7 @@ const Job = () => {
   const { user, isLoaded } = useUser();
   const [isApplied, setisApplied] = useState<boolean>(false);
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const role = user?.unsafeMetadata.role;
   const {
     data: applications,
@@ -60,11 +62,11 @@ const Job = () => {
     company: { company_name, company_logo_url } = {},
   } = jobDetails || {};
   useEffect(() => {
-    async function getJob(jobId: string) {
+    async function getData(jobId: string) {
       await fetchApplications(jobId);
       await fetchJob(jobId);
     }
-    if (id) getJob(id);
+    if (id) getData(id);
   }, [id]);
   useEffect(() => {
     if (isLoaded) {
@@ -189,6 +191,11 @@ const Job = () => {
               applied={isApplied || false}
               fetchJob={fetchJob}
             />
+          )}
+          {role === "recruiter" && (
+            <Button onClick={() => navigate(`/applications/${jobDetails?.id}`)}>
+              Applications
+            </Button>
           )}
         </div>
       </Card>

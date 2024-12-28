@@ -36,3 +36,21 @@ export async function applyJob(token: string, data: ApplicationData) {
     console.log("error occurred while applying for a job", error.message);
   }
 }
+
+export async function updateApplicationStatus(
+  token: string,
+  applicationId: string,
+  status: string
+) {
+  const supabase = createClerkSupabaseClient(token);
+  const { error } = await supabase
+    .from("applications")
+    .update({ status })
+    .eq("id", applicationId);
+  if (error) {
+    console.log(
+      "error occurred while updating application status",
+      error.message
+    );
+  }
+}

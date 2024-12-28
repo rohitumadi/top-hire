@@ -17,7 +17,7 @@ export type Database = {
           candidate_name: string;
           created_at: string;
           education: string;
-          expirence: string;
+          experience: string;
           id: number;
           job_id: number;
           resume: string;
@@ -183,6 +183,10 @@ export type JobWithCompany = Database["public"]["Tables"]["jobs"]["Row"] & {
     company_logo_url: string;
   };
 };
+export type applicationsType =
+  Database["public"]["Tables"]["applications"]["Row"][];
+
+export type Company = Database["public"]["Tables"]["companies"]["Row"];
 
 type PublicSchema = Database[Extract<keyof Database, "public">];
 
