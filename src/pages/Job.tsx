@@ -113,7 +113,7 @@ const Job = () => {
       color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
       borderWidth={3}
     >
-      <Card className="">
+      <Card className="border-none shadow-none ">
         <div className="flex flex-col gap-y-4  p-2">
           <h1 className="font-semibold text-5xl">
             {company_name} is hiring for {title} | {experience}

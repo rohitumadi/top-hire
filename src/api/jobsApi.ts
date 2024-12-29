@@ -57,6 +57,19 @@ export async function getSavedJobs(token: string) {
   return data;
 }
 
+export async function createJob(token: string, formData: any) {
+  const supabase = createClerkSupabaseClient(token);
+
+  const { data, error } = await supabase
+    .from("jobs")
+    .insert([formData])
+    .select();
+  if (error) {
+    console.log("error occurred while saving job", error.message);
+  }
+  return { data, error };
+}
+
 export async function saveJob(token: string, userId: string, jobId: string) {
   const supabase = createClerkSupabaseClient(token);
 

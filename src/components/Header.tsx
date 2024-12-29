@@ -1,13 +1,20 @@
-import { SignedIn, SignedOut, SignIn, UserButton } from "@clerk/clerk-react";
+import {
+  SignedIn,
+  SignedOut,
+  SignIn,
+  UserButton,
+  useUser,
+} from "@clerk/clerk-react";
+import { BriefcaseBusiness, Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Button } from "./ui/button";
-import { BriefcaseBusiness, Heart } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";
+import { Button } from "./ui/button";
 
 const Header = () => {
   const [showSignIn, setShowSignIn] = useState(false);
   const [search, setSearch] = useSearchParams();
+  const { user } = useUser();
   useEffect(() => {
     if (search.get("sign-in")) {
       setShowSignIn(true);
@@ -20,6 +27,7 @@ const Header = () => {
       setSearch({});
     }
   }
+  const role = user?.unsafeMetadata.role;
   return (
     <nav className="flex items-center justify-between py-2 px-2 ">
       <Link to="/" className="">
@@ -27,6 +35,12 @@ const Header = () => {
       </Link>
 
       <div className="flex items-center gap-2">
+        {role === "recruiter" && (
+          <Link to="/post-job">
+            <Button>Post a Job</Button>
+          </Link>
+        )}
+
         <Link to="/jobs">
           <Button>Jobs</Button>
         </Link>

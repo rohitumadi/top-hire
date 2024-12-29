@@ -35,7 +35,7 @@ const JobCard = ({ jobDetails }: { jobDetails: JobCardProps }) => {
       borderWidth={3}
     >
       <Card
-        className="cursor-pointer relative  w-full "
+        className="cursor-pointer border-none shadow-none relative   w-full "
         onClick={() => {
           navigate(`/job/${id}`, { state: { jobDetails } });
         }}

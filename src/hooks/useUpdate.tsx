@@ -19,11 +19,14 @@ export default function useUpdate(cb: Function) {
         template: "supabase",
       });
       const res = await cb(supabaseAccessToken, ...args);
+      if (res.error) {
+        throw res.error;
+      }
       toast.success(toastSuccessMsg);
       setError(undefined);
     } catch (e: any) {
       console.log("error", e);
-      toast.error(toastErrorMessage + e.message);
+      toast.error(toastErrorMessage + " " + e.message);
       setError(e);
     } finally {
       setLoading(false);
