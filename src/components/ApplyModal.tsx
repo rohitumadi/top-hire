@@ -44,11 +44,18 @@ const schema = z.object({
   resume: z
     .any()
     .refine(
+      (fileList) => fileList instanceof FileList && fileList.length > 0, // Ensure it's a FileList with at least one file
+      { message: "Company Logo is required" }
+    )
+    .refine(
       (file) =>
-        (file[0] && file[0].type === "application/pdf") ||
-        file[0].type === "application/msword",
+        (file && file.type === "application/pdf") ||
+        file.type === "application/msword",
       { message: "Only  PDF or Word file is allowed" }
-    ),
+    )
+    .refine((fileList) => fileList[0].size <= 5 * 1024 * 1024, {
+      message: "File size must not exceed 5MB",
+    }),
 });
 function ApplyModal({ job, applied = false, fetchJob }: ApplyModalProps) {
   const { theme } = useTheme();

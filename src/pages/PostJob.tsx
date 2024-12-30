@@ -1,5 +1,6 @@
 import { getCompanies } from "@/api/companiesApi";
 import { createJob } from "@/api/jobsApi";
+import AddCompanyDrawer from "@/components/AddCompanyDrawer";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Drawer, DrawerTrigger } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -170,6 +172,12 @@ const PostJob = () => {
                     </Select>
                   )}
                 />
+                <Drawer>
+                  <DrawerTrigger asChild>
+                    <Button>Add Company</Button>
+                  </DrawerTrigger>
+                  <AddCompanyDrawer fetchCompanies={fetchCompanies} />
+                </Drawer>
               </div>
               <div className="grid grid-cols-2 gap-2 justify-center">
                 <div>
