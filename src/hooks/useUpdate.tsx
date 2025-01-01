@@ -19,7 +19,7 @@ export default function useUpdate(cb: Function) {
         template: "supabase",
       });
       const res = await cb(supabaseAccessToken, ...args);
-      if (res.error) {
+      if (res?.error) {
         throw res.error;
       }
       toast.success(toastSuccessMsg);

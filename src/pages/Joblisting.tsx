@@ -1,5 +1,5 @@
 import { getCompanies } from "@/api/companiesApi";
-import { getJobs } from "@/api/jobsApi";
+import { getJobs, getSavedJobs } from "@/api/jobsApi";
 import CompanyFilter from "@/components/CompanyFilter";
 import JobCard from "@/components/JobCard";
 import LocationFilter from "@/components/LocationFilter";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ShineBorder from "@/components/ui/shine-border";
 import useFetch from "@/hooks/useFetch";
+import useFetchAuth from "@/hooks/useFetchAuth";
 import { Company, JobWithCompany } from "@/utils/database.types";
 import { Filter } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -28,6 +29,13 @@ const Joblisting = () => {
     location,
     company_id,
   });
+  const {
+    data: savedJobs,
+    loading: loadingSavedJobs,
+    error: errorSavedJobs,
+    fetchData: fetchSavedJobs,
+  } = useFetchAuth(getSavedJobs);
+  // const query = useQuery({ queryKey: ['todos'], queryFn: getTodos })
   const {
     data: companies,
     loading: loadingCompanies,
@@ -109,7 +117,14 @@ const Joblisting = () => {
         {!loadingJobs && jobs && jobs.length > 0 && (
           <div className="flex flex-col sm:col-span-5 p-2 gap-5 justify-center items-center flex-grow">
             {jobs.map((job: any) => {
-              return <JobCard key={job.id} jobDetails={job} />;
+              return (
+                <JobCard
+                  savedJobs={savedJobs}
+                  fetchSavedJobs={fetchSavedJobs}
+                  key={job.id}
+                  jobDetails={job}
+                />
+              );
             })}
           </div>
         )}

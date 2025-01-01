@@ -2,28 +2,32 @@ import { useNavigate } from "react-router-dom";
 import LikeButton from "./LikeButton";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import ShineBorder from "./ui/shine-border";
+import { JobWithCompany } from "@/utils/database.types";
 interface JobCardProps {
-  title: string;
-  id: string;
-  location: string;
-  isOpen: boolean;
-  description: string;
-  requirements: string;
-  expected_salary: string;
-  experience: string;
-  company: {
-    company_name: string;
-    company_logo_url: string;
+  fetchSavedJobs: () => void;
+  savedJobs: JobWithCompany[];
+  jobDetails: {
+    title: string;
+    id: string;
+    location: string;
+    isOpen: boolean;
+    description: string;
+    requirements: string;
+    expected_salary: string;
+    experience: string;
+    company: {
+      company_name: string;
+      company_logo_url: string;
+    };
   };
 }
-const JobCard = ({ jobDetails }: { jobDetails: JobCardProps }) => {
+const JobCard = ({ jobDetails, savedJobs, fetchSavedJobs }: JobCardProps) => {
   const navigate = useNavigate();
   const {
     title,
     id,
     location,
     experience,
-
     expected_salary,
     company: { company_name, company_logo_url },
   } = jobDetails;
@@ -56,9 +60,12 @@ const JobCard = ({ jobDetails }: { jobDetails: JobCardProps }) => {
           <p className="col-span-3 ">
             Expected Salary: {expected_salary} | Experience: {experience}
           </p>
-          <LikeButton jobId={id} />
+          <LikeButton
+            savedJobs={savedJobs}
+            fetchSavedJobs={fetchSavedJobs}
+            jobId={id}
+          />
         </CardContent>
-        {/* <BorderBeam size={250} duration={12} delay={9} /> */}
       </Card>
     </ShineBorder>
   );

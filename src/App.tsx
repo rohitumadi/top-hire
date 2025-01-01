@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ThemeProvider } from "./components/theme-provider";
 import AppLayout from "./layouts/AppLayout";
+import Applications from "./pages/Applications.tsx";
 import Home from "./pages/Home";
 import Job from "./pages/Job";
 import Joblisting from "./pages/Joblisting";
@@ -10,7 +11,6 @@ import MyJobs from "./pages/MyJobs";
 import Onboarding from "./pages/Onboarding";
 import PostJob from "./pages/PostJob";
 import SavedJobs from "./pages/SavedJobs";
-import Applications from "./pages/Applications.tsx";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +38,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/applications/:jobId",
-        element: <Applications />,
+        element: (
+          <ProtectedRoute>
+            <Applications />,
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/post-job",

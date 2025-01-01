@@ -48,9 +48,7 @@ export async function getSavedJobs(token: string) {
   const supabase = createClerkSupabaseClient(token);
   const { data, error } = await supabase
     .from("saved_jobs")
-    .select(
-      "*, job:jobs(title, location, company:companies(company_name,company_logo_url))"
-    );
+    .select("*, job:jobs(*, company:companies(company_name,company_logo_url))");
   if (error) {
     console.log("error occurred while fetching saved jobs", error.message);
   }
