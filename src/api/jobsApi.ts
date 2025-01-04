@@ -57,7 +57,6 @@ export async function getJobDetails(jobId: string) {
   }
   return data;
 }
-
 export async function getSavedJobs(token: string, userId: string) {
   const supabase = createClerkSupabaseClient(token);
   const { data, error } = await supabase
