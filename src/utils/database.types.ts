@@ -183,6 +183,10 @@ export type JobWithCompany = Database["public"]["Tables"]["jobs"]["Row"] & {
     company_logo_url: string;
   };
 };
+export type savedJobsWithJobDetails =
+  Database["public"]["Tables"]["saved_jobs"]["Row"] & {
+    job: JobWithCompany;
+  };
 export type applicationsType =
   Database["public"]["Tables"]["applications"]["Row"][];
 

@@ -10,11 +10,13 @@ import ShineBorder from "@/components/ui/shine-border";
 import useFetch from "@/hooks/useFetch";
 import useFetchAuth from "@/hooks/useFetchAuth";
 import { Company, JobWithCompany } from "@/utils/database.types";
+import { useUser } from "@clerk/clerk-react";
 import { Filter } from "lucide-react";
 import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const Joblisting = () => {
+  const { user, isLoaded } = useUser();
   const [searchQuery, setSearchQuery] = useState<FormDataEntryValue>();
   const [location, setLocation] = useState<string>();
   const { theme } = useTheme();
@@ -35,7 +37,6 @@ const Joblisting = () => {
     error: errorSavedJobs,
     fetchData: fetchSavedJobs,
   } = useFetchAuth(getSavedJobs);
-  // const query = useQuery({ queryKey: ['todos'], queryFn: getTodos })
   const {
     data: companies,
     loading: loadingCompanies,
@@ -47,9 +48,18 @@ const Joblisting = () => {
       await fetchJobs();
       await fetchCompanies();
     }
-
     getData();
   }, [searchQuery, location, company_id]);
+
+  useEffect(() => {
+    if (!isLoaded || !user) {
+      return;
+    }
+    const getData = async () => {
+      await fetchSavedJobs(user?.id);
+    };
+    if (isLoaded) getData();
+  }, [isLoaded, user]);
 
   function handleSearch(e: any) {
     e.preventDefault();
@@ -76,7 +86,6 @@ const Joblisting = () => {
         <Input name="search" type="text" placeholder="Search by Job Title" />
         <Button>Search</Button>
       </form>
-      {/* add filters */}
 
       <div className="grid sm:grid-cols-7 grid-cols-1 ">
         <div className="p-2 sm:col-span-2">

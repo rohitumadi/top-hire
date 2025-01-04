@@ -28,6 +28,20 @@ export async function getJobs(companyDetails: any) {
   }
   return data;
 }
+export async function getJobsByRecruiterId(token: string, recruiterId: string) {
+  const query = supabase
+    .from("jobs")
+    .select("*, company:companies(company_name,company_logo_url)")
+    .eq("recruiter_id", recruiterId);
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.log("error occurred while fetching jobs", error.message);
+    return null;
+  }
+  return { data, error };
+}
 
 export async function getJobDetails(jobId: string) {
   // await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -44,11 +58,12 @@ export async function getJobDetails(jobId: string) {
   return data;
 }
 
-export async function getSavedJobs(token: string) {
+export async function getSavedJobs(token: string, userId: string) {
   const supabase = createClerkSupabaseClient(token);
   const { data, error } = await supabase
     .from("saved_jobs")
-    .select("*, job:jobs(*, company:companies(company_name,company_logo_url))");
+    .select("*, job:jobs(*, company:companies(company_name,company_logo_url))")
+    .eq("user_id", userId);
   if (error) {
     console.log("error occurred while fetching saved jobs", error.message);
   }

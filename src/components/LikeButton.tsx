@@ -1,18 +1,22 @@
 import { saveJob, unSaveJob } from "@/api/jobsApi";
 import useUpdate from "@/hooks/useUpdate";
-import { JobWithCompany } from "@/utils/database.types";
+import {
+  JobWithCompany,
+  savedJobsWithJobDetails,
+} from "@/utils/database.types";
 import { useUser } from "@clerk/clerk-react";
 import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 interface LikeButtonProps {
-  fetchSavedJobs: () => void;
+  fetchSavedJobs: (userId: string) => void;
   jobId: string;
-  savedJobs: JobWithCompany[];
+  savedJobs?: savedJobsWithJobDetails[];
 }
 
 const LikeButton = ({ jobId, savedJobs, fetchSavedJobs }: LikeButtonProps) => {
   const [isLiked, setIsLiked] = useState(false);
+
   const { fn: saveJobFn, loading: saveJobLoading } = useUpdate(saveJob);
   const { fn: unSaveJobFn, loading: unSaveJobLoading } = useUpdate(unSaveJob);
 
@@ -24,16 +28,15 @@ const LikeButton = ({ jobId, savedJobs, fetchSavedJobs }: LikeButtonProps) => {
       return;
     }
     const getData = async () => {
-      await fetchSavedJobs();
+      await fetchSavedJobs(user?.id);
     };
     getData();
   }, [isLoaded, unSaveJobLoading]);
-
   useEffect(() => {
     if (!savedJobs) {
       return;
     }
-    const job = savedJobs.find((job: any) => job.job_id === jobId);
+    const job = savedJobs.find((job: any) => job.job_id == jobId);
     if (job) {
       setIsLiked(true);
     }

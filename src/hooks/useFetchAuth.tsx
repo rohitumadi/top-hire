@@ -16,7 +16,9 @@ const useFetchAuth = (cb: Function) => {
       });
 
       const res = await cb(supabaseAccessToken, ...args);
-
+      if (res?.error) {
+        throw res.error;
+      }
       setData(res);
       setError(undefined);
     } catch (e: any) {

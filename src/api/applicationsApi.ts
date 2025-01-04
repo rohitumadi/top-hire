@@ -37,6 +37,17 @@ export async function applyJob(token: string, data: ApplicationData) {
   }
 }
 
+export async function getApplicationWithUserId(token: string, userId: string) {
+  const supabase = createClerkSupabaseClient(token);
+  const { data, error } = await supabase
+    .from("applications")
+    .select("*,job:jobs(*, company:companies(company_name,company_logo_url))")
+    .eq("candidate_id", userId);
+  if (error) {
+    console.log("error occurred while fetching applications", error.message);
+  }
+  return { data, error };
+}
 export async function updateApplicationStatus(
   token: string,
   applicationId: string,

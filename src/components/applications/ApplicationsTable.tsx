@@ -70,7 +70,7 @@ export function ApplicationsTable<TData, TValue>({
     status: string
   ): Promise<void> {
     await updateApplicationStatusFn(
-      "Status updated sucessflly",
+      "Status updated successfully",
       "Error updating status",
       applicationId,
       status

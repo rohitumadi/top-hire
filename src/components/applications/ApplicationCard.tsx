@@ -1,19 +1,20 @@
-import {
-  JobWithCompany,
-  savedJobsWithJobDetails,
-} from "@/utils/database.types";
 import { useNavigate } from "react-router-dom";
-import LikeButton from "./LikeButton";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import ShineBorder from "./ui/shine-border";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Database, JobWithCompany } from "@/utils/database.types";
+import ShineBorder from "../ui/shine-border";
+import { Badge } from "../ui/badge";
 
-interface JobCardProps {
-  fetchSavedJobs?: () => void;
-  savedJobs?: savedJobsWithJobDetails[];
-  jobDetails: JobWithCompany;
+interface ApplicationWithComapnyType {
+  job_id: string; // Replace with the actual type
+  candidate_id: string;
+  status: Database["public"]["Enums"]["status"];
+  job: JobWithCompany;
 }
-const JobCard = ({ jobDetails, savedJobs, fetchSavedJobs }: JobCardProps) => {
-  const navigate = useNavigate();
+function ApplicationCard({
+  jobDetails,
+}: {
+  jobDetails: ApplicationWithComapnyType;
+}) {
   const {
     title,
     id,
@@ -21,7 +22,9 @@ const JobCard = ({ jobDetails, savedJobs, fetchSavedJobs }: JobCardProps) => {
     experience,
     expected_salary,
     company: { company_name, company_logo_url },
-  } = jobDetails;
+  } = jobDetails.job;
+
+  const navigate = useNavigate();
   return (
     <ShineBorder
       className="relative flex h-fit w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl"
@@ -31,7 +34,7 @@ const JobCard = ({ jobDetails, savedJobs, fetchSavedJobs }: JobCardProps) => {
       <Card
         className="cursor-pointer border-none shadow-none relative   w-full "
         onClick={() => {
-          navigate(`/job/${id}`);
+          navigate(`/job/${id}`, { state: { jobDetails } });
         }}
       >
         <CardHeader className="p-4">
@@ -50,16 +53,12 @@ const JobCard = ({ jobDetails, savedJobs, fetchSavedJobs }: JobCardProps) => {
           <p className="col-span-3 ">
             Expected Salary: {expected_salary} | Experience: {experience}
           </p>
-          {savedJobs && fetchSavedJobs && (
-            <LikeButton
-              savedJobs={savedJobs}
-              fetchSavedJobs={fetchSavedJobs}
-              jobId={id.toString()}
-            />
-          )}
+          <div>
+            <Badge>{jobDetails.status}</Badge>
+          </div>
         </CardContent>
       </Card>
     </ShineBorder>
   );
-};
-export default JobCard;
+}
+export default ApplicationCard;

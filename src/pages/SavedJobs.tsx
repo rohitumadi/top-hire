@@ -21,10 +21,10 @@ const SavedJobs = () => {
       return;
     }
     const getData = async () => {
-      await fetchSavedJobs();
+      await fetchSavedJobs(user?.id);
     };
-    getData();
-  }, [isLoaded]);
+    if (isLoaded) getData();
+  }, [isLoaded, user]);
 
   return (
     <div>
