@@ -77,7 +77,7 @@ const Joblisting = () => {
   }
 
   return (
-    <div className=" flex flex-col gap-5">
+    <div className=" flex flex-col w-full px-4 gap-5">
       <h1 className="text-center text-5xl font-semibold ">Latest Jobs</h1>
       <form
         className="w-full flex  gap-2 mt-2 "

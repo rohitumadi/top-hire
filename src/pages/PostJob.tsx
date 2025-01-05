@@ -96,7 +96,7 @@ const PostJob = () => {
     reset();
   }
   return (
-    <div>
+    <div className="w-full p-4 flex flex-col gap-y-4">
       <h1 className="text-center text-5xl font-semibold ">Post a Job</h1>
       <Card className="mb-6">
         <CardHeader>

@@ -29,7 +29,7 @@ const Header = () => {
   }
   const role = user?.unsafeMetadata.role;
   return (
-    <nav className="flex items-center justify-between py-2 px-2 ">
+    <nav className="flex items-center  w-full justify-between py-2 px-2 ">
       <Link to="/" className="">
         <img src="/logo2.png" alt="logo" className="w-24  rounded-full" />
       </Link>

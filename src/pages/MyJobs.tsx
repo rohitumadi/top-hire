@@ -42,7 +42,7 @@ const MyJobs = () => {
     );
   if (isLoaded) {
     return (
-      <div>
+      <div className="p-4">
         <h1 className="text-center text-5xl font-semibold mb-4">
           {role === "recruiter" ? "Posted Jobs" : "Applied Jobs"}
         </h1>

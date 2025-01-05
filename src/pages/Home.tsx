@@ -1,3 +1,4 @@
+import AnimatedGridPattern from "@/components/ui/animated-grid-pattern";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { BorderBeam } from "@/components/ui/border-beam";
 import { CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -58,15 +59,13 @@ const Home = () => {
             <BorderBeam size={250} duration={12} delay={9} />
           </MagicCard>
         </section>
-        {/* <Accordion type="single" collapsible className="w-full">
-          {faqs.map((faq, idx) => (
-            <AccordionItem key={idx} value={`item-${idx + 1}`}>
-              <AccordionTrigger>{faq.question}</AccordionTrigger>
-              <AccordionContent className="">{faq.answer}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion> */}
       </main>
+      <AnimatedGridPattern
+        numSquares={100}
+        maxOpacity={0.1}
+        duration={3}
+        repeatDelay={1}
+      />
     </BackgroundLines>
   );
 };

@@ -27,7 +27,7 @@ const SavedJobs = () => {
   }, [isLoaded, user]);
 
   return (
-    <div>
+    <div className="px-4">
       <h1 className="text-center text-5xl font-semibold mb-4">Saved Jobs</h1>
       {loadingSavedJobs && (
         <div className="flex justify-center items-center h-screen">
